@@ -1,0 +1,45 @@
+---
+import type { GetStaticPaths } from "astro";
+import Layout from "../../layouts/Layout.astro";
+import { getPostByID, getPosts } from "../../services/api.ts";
+
+const { id } = Astro.params;
+if (!id) {
+    Astro.redirect("/");
+}
+
+const post = await getPostByID(id);
+
+// Con el prerender no es necesario el getStaticPaths
+// export const getStaticPaths = (async () => {
+//     const AllPost = await getPosts();
+//     return AllPost.map((post: any) => ({
+//         params: { id: post.id.toString() },
+//     }));
+//     // return [
+//     //     { params: { id: "1" } },
+//     //     { params: { id: "2" } },
+//     //     { params: { id: "3" } },
+//     // ];
+// }) satisfies GetStaticPaths;
+export const prerender = false;
+---
+
+<Layout title={post.title}>
+    <article class="prose lg:prose-xl gap-4">
+        <span
+            class:list={[
+                "text-sm",
+                {
+                    "bg-red-500 p-2 rounded font-bold": post.id % 2 === 0,
+                    hidden: post.id % 2 !== 0,
+                },
+            ]}
+        >
+            Tendencia
+        </span>
+        <h1 class="text-4xl font-bold p-3">"{post.title}"</h1>
+        <span class="text-sm text-gray-400">Post #{post.id}</span>
+        <p>{post.body}</p>
+    </article>
+</Layout>
