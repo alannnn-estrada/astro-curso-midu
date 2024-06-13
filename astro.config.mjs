@@ -2,7 +2,7 @@ import { defineConfig } from 'astro/config';
 import tailwind from "@astrojs/tailwind";
 import preact from "@astrojs/preact";
 
-import node from "@astrojs/node";
+import vercel from "@astrojs/vercel/serverless";
 
 // https://astro.build/config
 export default defineConfig({
@@ -12,7 +12,5 @@ export default defineConfig({
   // output: 'server' // para que sea un sitio con cosas dinámicas
   // output: 'static' // para que sea un sitio con cosas estáticas
   ,
-  adapter: node({
-    mode: "standalone"
-  })
+  adapter: vercel()
 });
